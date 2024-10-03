@@ -9,11 +9,33 @@ poem.
 
 ##### Table of contents:
 
+- [Installation](#installation)
 - [Goal](#goal)
 - [Design](#design)
     - [Word classes](#word-classes)
     - [Markov Chains](#markov-chains)
 - [Improvements](#improvements)
+
+## Installation
+
+To install the program:
+
+1. Ensure [Python 3](https://www.python.org) is installed.
+```
+python --version
+```
+2. Clone the repository
+```
+git clone https://github.com/mattiarmston/nonsense_poetry.git
+```
+3. Navigate to the installation directory
+```
+cd nonsense_poetry
+```
+4. Run the program
+```
+python nonsense_poetry.py
+```
 
 ## Goal
 
