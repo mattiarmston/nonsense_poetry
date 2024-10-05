@@ -26,11 +26,13 @@ states = [
     "adjective", "adverb", "noun", "preposition", "pronoun", "verb"
 ]
 
+# This could be improved by moving the words into external files
 words = {
     "adjective": ["tall", "quick", "slow", "great", "small", "impressive",
         "small", "withering", "growing", "flaming"],
     "adverb": ["quickly", "slowly", "tearfully", "hopefully", "coldly",
         "warmly"],
+    "determiner": ["the", "a", "one", "the first", "the last"],
     "noun": ["mountain", "store", "village", "gold", "forest", "valley", "hero",
         "villain", "traveller"],
     "preposition": ["into", "through", "above", "past"],
@@ -88,6 +90,24 @@ def generate_states():
         state = get_next_state(state)
     return states
 
+def add_determiners(states):
+    i = 0
+    while i < len(states):
+        if states[i] == "noun":
+            j = i - 1
+            # The determiner needs to be added before the first adjective
+            # e.g. (One) small quick hero
+            while states[j] == "adjective":
+                j -= 1
+            states.insert(j + 1, "determiner")
+            # The sentence length has now increased by one and the index of the
+            # noun, which was previously n, is now n + 1. If we do not increase
+            # the index here, the next loop will detect the same noun we just
+            # found and add another determiner creating an infinite loop.
+            i += 1
+        i += 1
+    return states
+
 def validate_states(states):
     # A sentence must have a verb and a subject
     if "noun" not in states and "pronoun" not in states:
@@ -119,17 +139,21 @@ def get_punctuation(states, i, sentence_start):
     no_subjects = sentence.count("noun") + sentence.count("pronoun")
     if no_verbs != no_subjects:
         return " ", sentence_start
-    # If the sentence has an adverb already it can be finished. Any trailing
-    # adverbs will be part of the next sentence
-    if "adverb" in sentence:
-        return ". ", i
     # If this is the final word it should have a full stop.
     try:
         next = states[i]
     except IndexError:
         return ".", i
+    # If the last word is an adverb add it to the current sentence, since there
+    # is no next one.
+    if i == len(states) - 1 and next == "adverb":
+        return " ", sentence_start
+    # If the sentence has an adverb already it can be finished. Any trailing
+    # adverbs will be part of the next sentence
+    if "adverb" in sentence:
+        return ". ", i
     # If an adverb or preposition is the next word, it should be included in
-    # the current sentence
+    # the current sentence, anything else should not
     if next not in ["adverb", "preposition"]:
         return ". ", i
     return " ", sentence_start
@@ -165,6 +189,7 @@ def get_line():
     states = []
     while not validate_states(states):
         states = generate_states()
+    states = add_determiners(states)
     line = generate_line(states)
     return line
 

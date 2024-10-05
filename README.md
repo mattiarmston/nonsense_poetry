@@ -79,17 +79,15 @@ The 6 main word classes in English are:
 
 - Adjectives
 - Adverbs
+- Determiners
 - Nouns
 - Prepositions
 - Pronouns
 - Verbs
-- Conjunctions (unused)
-- Determiners (unused)
+- Conjunctions (unsupported)
 
-Determiners and conjunctions are removed to reduce complexity. Determiners are
-omitted since coherent sentences can still be generated without them and
-conjunctions can be replaced with full stops and new sentences so they can also
-be removed. 
+Conjunctions are not currently supported, since they can be replaced with
+full stops and new sentences. Support may be added at some point.
 
 ### Markov Chains
 
@@ -102,7 +100,7 @@ a pronoun then the next word has a 50% chance of being a verb, 25% for an adverb
 and 25% for a preposition.
 
 This is an example Markov Chain for each state; the probabilities have changed
-for the final version, but are similar. Probabilities that are 0 have been
+for the final version, but are similar and probabilities that are 0 have been
 omitted. The initial state can be any but the final state should not be an
 adjective or preposition (since these would not generate coherent sentences).
 
@@ -135,13 +133,6 @@ Verb:
 - adjective - 0.1
 
 ## Improvements
-
-One of the main issues the program has is generating trailing adverbs. Some
-sentences end with an adverb, which is valid in some circumstances. The current
-punctuation algorithm decides that the trailing adverb should be the first word
-in the next sentence. However this sentence does not exist so the adverb ends up
-as a solitary word, this could be fixed by improving the punctuation algorithm
-to include it as part of the final sentence.
 
 The quality of the program's output is also inconsistent. Whilst it is usually
 comprehensible, it is often meaningless and uninteresting. This could be
