@@ -10,6 +10,7 @@ poem.
 ##### Table of contents:
 
 - [Installation](#installation)
+    - [Example output](#example-output)
 - [Goal](#goal)
 - [Design](#design)
     - [Word classes](#word-classes)
@@ -35,6 +36,19 @@ cd nonsense_poetry
 4. Run the program
 ```
 python nonsense_poetry.py
+```
+
+### Example output
+
+```
+Through the last gold runs the last gold hopefully.
+Quickly she runs.
+```
+
+
+```
+The flaming gold walks warmly.
+The first forest walks tearfully.
 ```
 
 ## Goal
@@ -100,37 +114,18 @@ a pronoun then the next word has a 50% chance of being a verb, 25% for an adverb
 and 25% for a preposition.
 
 This is an example Markov Chain for each state; the probabilities have changed
-for the final version, but are similar and probabilities that are 0 have been
-omitted. The initial state can be any but the final state should not be an
-adjective or preposition (since these would not generate coherent sentences).
+for the final version, but are similar. The initial state can be any but the
+final state should not be an adjective or preposition (since these would not
+generate coherent sentences).
 
-Adjective:
-- noun - 1
-
-Adverb:
-- pronoun - 0.4
-- noun - 0.3
-- verb - 0.3
-
-Noun:
-- verb - 0.5
-- adverb - 0.25
-- preposition - 0.25
-
-Preposition:
-- noun - 0.5
-- adjective - 0.5
-
-Pronoun:
-- verb - 0.5
-- adverb - 0.25
-- preposition - 0.25
-
-Verb:
-- adverb - 0.6
-- noun - 0.2
-- pronoun - 0.1
-- adjective - 0.1
+|             | Adjective | Adverb | Noun | Preposition | Pronoun | Verb |
+|-------------|-----------|--------|------|-------------|---------|------|
+| Adjective   |     0     |    0   |   1  |      0      |    0    |   0  |
+| Adverb      |     0     |    0   |  0.3 |      0      |   0.4   |  0.3 |
+| Noun        |     0     |  0.25  |   0  |     0.25    |    0    |  0.5 |
+| Preposition |    0.5    |    0   |  0.5 |      0      |    0    |   0  |
+| Pronoun     |     0     |  0.25  |   0  |     0.25    |    0    |  0.5 |
+| Verb        |    0.1    |   0.6  |  0.2 |      0      |   0.1   |   0  |
 
 ## Improvements
 
